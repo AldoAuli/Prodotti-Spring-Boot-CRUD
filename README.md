@@ -33,7 +33,7 @@ ProdottoController.java – Gestione delle rotte (endpoint principali su /invent
 
 Template Thymeleaf: prodotto.html per gestione e visualizzazione prodotti
 
-🌐 Template HTML
+Template HTML
 
 Il template prodotto.html (in src/main/resources/templates/) fornisce:
 
