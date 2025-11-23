@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Inventario Prodotti</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        fieldset { margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; }
+        label { display: inline-block; width: 100px; }
+        input[type="text"], input[type="number"] { padding: 5px; margin-bottom: 10px; }
+        table { border-collapse: collapse; width: 80%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+
+    <h1>Gestione Inventario</h1>
+
+    <fieldset>
+        <legend>Aggiungi/Modifica Prodotto</legend>
+        
+        <form method="POST" th:action="@{/salvaProdotto}" th:object="${nuovoProdotto}">
+            
+            <input type="hidden" th:field="*{id}" /> 
+            
+            <label>Nome:</label>
+            <input type="text" th:field="*{nome}" required />
+            <br/>
+
+            <label>Quantità:</label>
+            <input type="number" th:field="*{quantita}" required min="0" />
+            <br/>
+
+            <label>Prezzo (€):</label>
+            <input type="number" th:field="*{prezzo}" required step="0.01" min="0" />
+            <br/><br/>
+
+            <button type="submit">Salva Prodotto</button>
+        </form>
+    </fieldset>
+
+    <hr/>
+
+    <h2>Lista Prodotti in Magazzino</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Quantità</th>
+                <th>Prezzo (€)</th>
+                <th>Azione</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p : ${listaProdotti}">
+                <td th:text="${p.id}">1</td>
+                <td th:text="${p.nome}">Caffè</td>
+                <td th:text="${p.quantita}">50</td>
+                <td th:text="${p.prezzo}">12.50</td> 
+                
+                <td> 
+                    <a th:href="@{/modificaProdotto/{id}(id=${p.id})}" style="color:blue; margin-right: 10px;">Modifica</a>
+                    
+                    <a th:href="@{/eliminaProdotto/{id}(id=${p.id})}" style="color:red;">Elimina</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${listaProdotti.empty}">
+        <p><i>Il magazzino è vuoto. Aggiungi il primo prodotto!</i></p>
+    </div>
+
+</body>
+</html>
