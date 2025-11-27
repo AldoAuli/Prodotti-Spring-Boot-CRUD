@@ -18,21 +18,70 @@
 
     <fieldset>
         <legend>Aggiungi/Modifica Prodotto</legend>
+		
+		<h3>🔍 Ricerca per Nome</h3>
+		<form method="GET" th:action="@{/}" class="mb-4">
+		    <input type="text" name="cerca" placeholder="Cerca prodotto per nome..." />
+		    <button type="submit" class="btn btn-sm btn-primary">Cerca</button>
+		    <a th:href="@{/}" class="btn btn-sm btn-secondary">Azzera</a>
+		</form>
+
+		<hr>
+
+		<h3>📉 Filtri Avanzati</h3>
+		<div class="d-flex mb-4">
+		    <form method="GET" th:action="@{/}" class="me-3">
+		        <input type="number" name="quantita" placeholder="Qtà massima..." required style="width: 150px;"/>
+		        <button type="submit" class="btn btn-sm btn-warning">Filtra per quantità</button>
+				<a th:href="@{/}" class="btn btn-sm btn-secondary">Azzera</a>
+		    </form>
         
         <form method="POST" th:action="@{/salvaProdotto}" th:object="${nuovoProdotto}">
-            
+			<div class="mb-3">
+						    <label for="categoria" class="form-label">Categoria:</label>
+						    <select id="categoria" th:field="*{categoria}" class="form-select" 
+						            th:classappend="${#fields.hasErrors('categoria')} ? 'is-invalid' : ''">
+						        <option value="">Seleziona una categoria</option>
+						        
+						        <option th:each="cat : ${listaCategorie}" 
+						                th:value="${cat.id}" 
+						                th:text="${cat.nome}">
+						            Nome Categoria
+						        </option>
+						    </select>
+						    <div class="invalid-feedback" th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}">
+						        Errore Categoria
+						    </div>
+						</div>
+
+						<div class="mb-3">
+												    <label for="fornitori" class="form-label">Fornitore:</label>
+												    <select multiple id="fornitori" th:field="*{fornitori}" class="form-select" th:classappend="${#fields.hasErrors('fornitori')} ? 'is-invalid' : ''" >
+												        <option th:each="forn : ${listaFornitori}" 
+												                th:value="${forn.id}" 
+												                th:text="${forn.nome}">
+												            Nome Fornitore
+												        </option>
+												    </select>
+												    <div class="invalid-feedback" th:if="${#fields.hasErrors('fornitori')}" th:errors="*{fornitori}">
+												        Errore Fornitore
+												    </div>
+												</div>
             <input type="hidden" th:field="*{id}" /> 
             
             <label>Nome:</label>
             <input type="text" th:field="*{nome}" required />
+			<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" style="color: red;"></span>
             <br/>
 
             <label>Quantità:</label>
             <input type="number" th:field="*{quantita}" required min="0" />
+			<span th:if="${#fields.hasErrors('quantita')}" th:errors="*{quantita}" style="color: red;"></span>
             <br/>
 
             <label>Prezzo (€):</label>
             <input type="number" th:field="*{prezzo}" required step="0.01" min="0" />
+			<span th:if="${#fields.hasErrors('prezzo')}" th:errors="*{prezzo}" style="color: red;"></span>
             <br/><br/>
 
             <button type="submit">Salva Prodotto</button>
@@ -50,6 +99,7 @@
                 <th>Nome</th>
                 <th>Quantità</th>
                 <th>Prezzo (€)</th>
+				<th>Categoria</th>
                 <th>Azione</th>
             </tr>
         </thead>
@@ -58,7 +108,8 @@
                 <td th:text="${p.id}">1</td>
                 <td th:text="${p.nome}">Caffè</td>
                 <td th:text="${p.quantita}">50</td>
-                <td th:text="${p.prezzo}">12.50</td> 
+                <td th:text="${p.prezzo}">12.50</td>
+				<td th:text="${p.categoria.nome}">Surgelati</td>
                 
                 <td> 
                     <a th:href="@{/modificaProdotto/{id}(id=${p.id})}" style="color:blue; margin-right: 10px;">Modifica</a>

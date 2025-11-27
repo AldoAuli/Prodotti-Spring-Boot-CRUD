@@ -25,11 +25,7 @@ public class ProdottoServiceImpl implements ProdottoService {
 
 	@Override
 	public Prodotto save(Prodotto prodotto) {
-		if(prodotto.getPrezzo()>0) {
 		return repo.save(prodotto) ;
-		}else {
-			throw new IllegalArgumentException("Il prezzo del prodotto deve essere un valore positivo.");
-		}
 	}
 
 	@Override
@@ -39,6 +35,25 @@ public class ProdottoServiceImpl implements ProdottoService {
 	@Override
 	public Optional<Prodotto> findById(int id) {
 		return repo.findById(id);
+	}
+
+
+	@Override
+	public List<Prodotto> findByNome(String cerca) {
+		return repo.findByNomeContainingIgnoreCase(cerca);
+		
+	}
+
+
+	@Override
+	public List<Prodotto> findByQuantita(int quantita) {
+		return repo.findByQuantitaLessThan(quantita);
+	}
+
+
+	@Override
+	public List<Prodotto> findByFornitoreNomeContainingIgnoreCase(String nome) {
+		return repo.findByFornitoriNomeContainingIgnoreCase(nome);
 	}
 
 }

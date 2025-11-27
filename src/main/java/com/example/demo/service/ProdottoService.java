@@ -10,4 +10,7 @@ public interface ProdottoService {
 	Prodotto save(Prodotto prodotto);
 	void deleteById(int id);
 	Optional<Prodotto> findById(int id);
+	List<Prodotto> findByNome(String cerca);
+	List<Prodotto> findByQuantita(int quantita);
+	List<Prodotto> findByFornitoreNomeContainingIgnoreCase(String nome);
 }
